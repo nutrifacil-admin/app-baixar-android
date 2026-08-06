@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Baixe o App NutriFácil — Android</title>
+<meta name="description" content="Baixe grátis o aplicativo NutriFácil no seu Android. Seu plano, suas receitas e seu progresso, sempre com você.">
+
+<!-- PWA (permite o popup nativo de instalação quando hospedado em meuaplicativo.nutrifacil.fit) -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#2E9E44">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="icon" href="icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="NutriFácil">
+<meta name="mobile-web-app-capable" content="yes">
+
+<style>
+  :root{
+    --brand:#2E9E44;
+    --brand-dark:#1E7A34;
+    --brand-deep:#125A2B;
+    --brand-light:#EAF9EE;
+    --bg:#F4F8F3;
+    --ink:#132A1C;
+    --muted:#6E8177;
+    --line:#E7EDE7;
+  }
+  *{ box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  html,body{ height:100%; margin:0; }
+  body{
+    background:
+      radial-gradient(130% 80% at 50% -8%, #E6F6E9 0%, rgba(230,246,233,0) 55%),
+      var(--bg);
+    color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',sans-serif;
+    display:flex; align-items:center; justify-content:center;
+    min-height:100vh; min-height:100dvh;
+    padding:calc(30px + env(safe-area-inset-top)) 22px calc(30px + env(safe-area-inset-bottom));
+    text-align:center;
+  }
+  .card{
+    max-width:400px; width:100%;
+    animation:rise .6s cubic-bezier(.22,.9,.3,1) both;
+  }
+  @keyframes rise{ from{opacity:0; transform:translateY(18px);} to{opacity:1; transform:none;} }
+  @keyframes float{ 0%,100%{transform:translateY(0);} 50%{transform:translateY(-7px);} }
+
+  /* Hero logo (ícone do app) */
+  .hero{ position:relative; width:146px; height:146px; margin:0 auto 10px; display:flex; align-items:center; justify-content:center; }
+  .hero .glow{
+    position:absolute; inset:-6px; border-radius:50%;
+    background:radial-gradient(circle, rgba(46,158,68,.24), rgba(46,158,68,0) 70%);
+    filter:blur(4px);
+  }
+  .hero .mascot{
+    position:relative; width:130px; height:130px; object-fit:cover;
+    border-radius:34px; background:#fff;
+    box-shadow:0 20px 44px rgba(18,90,43,.30), inset 0 0 0 1px rgba(255,255,255,.6);
+    animation:float 4.5s ease-in-out infinite;
+  }
+  .hero .mascot.hide{ display:none; }
+  .hero .fallback{
+    position:relative; width:130px; height:130px; border-radius:34px; object-fit:cover;
+    box-shadow:0 20px 44px rgba(18,90,43,.30); display:none;
+  }
+
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-size:11.5px; font-weight:700; letter-spacing:.12em;
+    color:var(--brand-dark); background:rgba(46,158,68,.10);
+    padding:6px 15px; border-radius:999px; margin:6px 0 16px; text-transform:uppercase;
+  }
+  .badge .free{ background:var(--brand); color:#fff; padding:2px 8px; border-radius:999px; font-size:10.5px; letter-spacing:.08em; }
+
+  h1{ font-size:28px; margin:0 0 12px; font-weight:800; letter-spacing:-.02em; line-height:1.18; }
+  h1 .accent{ color:var(--brand-dark); }
+  p.sub{ color:var(--muted); font-size:15.5px; margin:0 auto 30px; line-height:1.55; max-width:320px; }
+
+  /* Botão único Android */
+  .store-btn{
+    position:relative; overflow:hidden;
+    display:flex; align-items:center; justify-content:center; gap:13px;
+    width:100%; padding:18px 20px; border-radius:18px;
+    text-decoration:none; cursor:pointer; border:none; font-family:inherit;
+    background:linear-gradient(135deg, var(--brand) 0%, var(--brand-dark) 55%, var(--brand-deep) 100%);
+    color:#fff; box-shadow:0 16px 32px rgba(30,122,52,.36);
+    transition:transform .18s ease, box-shadow .18s ease;
+  }
+  .store-btn::after{
+    content:""; position:absolute; top:0; left:0; right:0; height:50%;
+    background:linear-gradient(180deg, rgba(255,255,255,.16), rgba(255,255,255,0));
+  }
+  .store-btn:active{ transform:translateY(1px) scale(.99); box-shadow:0 9px 20px rgba(30,122,52,.30); }
+  .store-btn .glyph{ flex-shrink:0; }
+  .store-btn .txt{ text-align:left; line-height:1.15; }
+  .store-btn .txt small{ display:block; font-size:11.5px; font-weight:600; opacity:.85; letter-spacing:.02em; }
+  .store-btn .txt strong{ display:block; font-size:18px; font-weight:800; letter-spacing:.01em; }
+
+  .reassure{
+    display:flex; align-items:center; justify-content:center; gap:8px;
+    margin-top:22px; color:var(--muted); font-size:12.5px;
+  }
+  .reassure svg{ color:var(--brand); flex-shrink:0; }
+
+  footer{ margin-top:16px; font-size:11.5px; color:var(--muted); opacity:.7; }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="hero">
+      <span class="glow"></span>
+      <img class="mascot" id="mascot"
+           src="https://i.postimg.cc/t4CDfdR7/icon-512.png"
+           alt="NutriFácil"
+           onerror="this.classList.add('hide');document.getElementById('mascotFallback').style.display='block';">
+      <img class="fallback" id="mascotFallback" src="icon-512.png" alt="NutriFácil"
+           onerror="this.src='icon-192.png';">
+    </div>
+
+    <span class="badge">App NutriFácil <span class="free">100% Grátis</span></span>
+    <h1>Baixe o app<br><span class="accent">no seu Android</span></h1>
+    <p class="sub">Seu plano, suas receitas e seu progresso, sempre com você.</p>
+
+    <button type="button" class="store-btn" id="btnAndroid">
+      <svg class="glyph" width="27" height="27" viewBox="0 0 24 24" fill="#fff"><path d="M17.6 9.48l1.84-3.18a.38.38 0 0 0-.14-.52.38.38 0 0 0-.52.14l-1.87 3.23a11.4 11.4 0 0 0-9.82 0L5.22 5.92a.38.38 0 0 0-.52-.14.38.38 0 0 0-.14.52L6.4 9.48A10.8 10.8 0 0 0 1 18h22a10.8 10.8 0 0 0-5.4-8.52zM7 15.25a1.25 1.25 0 1 1 0-2.5 1.25 1.25 0 0 1 0 2.5zm10 0a1.25 1.25 0 1 1 0-2.5 1.25 1.25 0 0 1 0 2.5z"/></svg>
+      <span class="txt"><small>Instalar no</small><strong>Android</strong></span>
+    </button>
+
+    <div class="reassure">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/><path d="m9 12 2 2 4-4"/></svg>
+      Grátis · instala em segundos
+    </div>
+
+    <footer>NutriFácil · Seu plano, sempre com você</footer>
+  </div>
+
+  <script>
+    var APP_URL = "https://aplicativo.nutrifacil.fit";
+
+    // Registra o service worker (necessário para o popup nativo de instalação no Android)
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function(){
+        navigator.serviceWorker.register('service-worker.js').catch(function(){});
+      });
+    }
+
+    // Captura o evento de instalabilidade do Chrome/Android
+    var deferredPrompt = null;
+    window.addEventListener('beforeinstallprompt', function(e){
+      e.preventDefault();
+      deferredPrompt = e;
+    });
+
+    // Android: dispara o popup nativo do Chrome; se indisponível, abre o app.
+    document.getElementById('btnAndroid').addEventListener('click', function(){
+      if (deferredPrompt){
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then(function(){ deferredPrompt = null; });
+      } else {
+        window.location.href = APP_URL;
+      }
+    });
+  </script>
+</body>
+</html>
